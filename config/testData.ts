@@ -16,11 +16,63 @@ export const USERS = {
     username: '',
     password: '',
   },
-  sqlInjectionUser: {
-    username: "' OR 1=1 --",
-    password: "' OR 1=1 --",
-  },
 };
+
+export const ERROR_MESSAGES = {
+  invalidCredentials: 'Your email and password both are invalid!',
+  requiredEmail: 'Email is a required field',
+  requiredPassword: 'Password is a required field',
+  invalidEmail: 'valid email',
+};
+
+export const INVALID_LOGIN_SCENARIOS = [
+
+  {
+    scenario: 'invalid credentials',
+    username: 'wrong@test.com',
+    password: 'wrong123',
+
+    validationType: 'global',
+
+    expectedError:
+      ERROR_MESSAGES.invalidCredentials
+  },
+
+  {
+    scenario: 'blank username',
+    username: '',
+    password: 'Password123',
+
+    validationType: 'email',
+
+    expectedError:
+      ERROR_MESSAGES.requiredEmail
+  },
+
+  {
+    scenario: 'blank password',
+    username: 'user@test.com',
+    password: '',
+
+    validationType: 'password',
+
+    expectedError:
+      ERROR_MESSAGES.requiredPassword
+  },
+
+  {
+    scenario: 'blank credentials',
+    username: '',
+    password: '',
+
+    validationType: 'multiple',
+
+    expectedErrors: {
+      email: ERROR_MESSAGES.requiredEmail,
+      password: ERROR_MESSAGES.requiredPassword
+    }
+  }
+];
 
 export const REGISTRATION_DATA = {
   validUser: {
@@ -77,11 +129,4 @@ export const URLS = {
   form: '/form',
   dashboard: '/dashboard',
   forgotPassword: '/forgot-password',
-};
-
-export const ERROR_MESSAGES = {
-  invalidCredentials: 'Invalid credentials',
-  requiredField: 'required',
-  passwordMismatch: 'Passwords do not match',
-  invalidEmail: 'valid email',
 };

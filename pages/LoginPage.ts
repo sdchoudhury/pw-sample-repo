@@ -18,4 +18,18 @@ export class LoginPage {
     return this.page.getByText('Your email and password both are invalid!');
   }
 
-}
+  getEmailFieldError() {
+
+    return this.page.getByText('Email is a required field');
+  
+  }
+
+    getPasswordFieldError() {
+
+    return this.page.getByText('Password is a required field');
+  
+  }
+
+}    
+
+  

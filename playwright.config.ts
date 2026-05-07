@@ -1,7 +1,7 @@
 /// &lt;reference types="node" /&gt;
 
 import { defineConfig } from '@playwright/test';
-import { baseURL } from './utils/env';
+import { baseURL } from './config/env';
 
 export default defineConfig({
   testDir: './tests',
@@ -19,6 +19,6 @@ export default defineConfig({
 
   reporter: [
     ['html'],
-    ['list']
+    ['allure-playwright']
   ]
 });

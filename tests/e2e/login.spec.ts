@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { test } from '../../fixtures/authFixture';
-import { USERS } from '../../config/testData';
+import { USERS, INVALID_LOGIN_SCENARIOS, ERROR_MESSAGES } from '../../config/testData';
 
 
 test.describe('User Lifecycle E2E - POM + Fixture', () => {
@@ -47,5 +47,63 @@ test.describe('User Lifecycle E2E - POM + Fixture', () => {
               .toContainText(/invalid/i);
     
   })
+
+for (const data of INVALID_LOGIN_SCENARIOS) {
+
+  test(`Verify login failure for ${data.scenario}`,
+  async ({ loginPage }) => {
+
+    await loginPage.navigate();
+
+    await loginPage.login(
+      data.username,
+      data.password
+    );
+
+    switch (data.validationType) {
+
+      case 'global':
+
+        await expect(loginPage.getErrorMessage())
+          .toBeVisible();
+
+        await expect(loginPage.getErrorMessage())
+          .toContainText(data.expectedError!);
+
+        break;
+
+      case 'email':
+
+        await expect(loginPage.getEmailFieldError())
+          .toBeVisible();
+
+        await expect(loginPage.getEmailFieldError())
+          .toContainText(data.expectedError!);
+
+        break;
+
+      case 'password':
+
+
+        await expect(loginPage.getPasswordFieldError())
+          .toBeVisible();
+
+        await expect(loginPage.getPasswordFieldError())
+          .toContainText(data.expectedError!);
+
+        break;
+
+      case 'multiple':
+
+        await expect(loginPage.getEmailFieldError())
+          .toContainText(data.expectedErrors?.email!);
+
+        await expect(loginPage.getPasswordFieldError() )
+          .toContainText(data.expectedErrors?.password!);
+
+        break;
+    }
+  });
+}
 
 });
